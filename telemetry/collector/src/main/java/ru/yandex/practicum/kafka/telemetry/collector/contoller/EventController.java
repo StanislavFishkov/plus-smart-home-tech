@@ -10,12 +10,17 @@ import org.springframework.web.bind.annotation.RestController;
 public class EventController {
 
     @PostMapping("/sensors")
-    public void postSensors() {
+    public void postSensor() {
+
+    }
+
+    @PostMapping("/hubs")
+    public void postHub() {
 
     }
 
     @GetMapping("/sensors")
-    public String getSensors() {
+    public String getSensor() {
         return "Hello";
     }
 }
