@@ -1,6 +1,7 @@
 package ru.yandex.practicum.kafka.telemetry.collector.config;
 
-public class CollectorTopics {
-    public static final String SENSOR_EVENTS_TOPIC = "telemetry.sensors.v1";
-    public static final String HUB_EVENTS_TOPIC = "telemetry.hubs.v1";
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
+@ConfigurationProperties(prefix = "collector.topic")
+public record CollectorTopics(String sensorEventsTopic, String hubEventsTopic) {
 }

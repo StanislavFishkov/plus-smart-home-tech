@@ -26,9 +26,4 @@ public class EventController {
         log.info("POST /events/hubs with body: {}", event);
         eventService.collectHubEvent(event);
     }
-
-    @GetMapping("/sensors")
-    public String getSensor() {
-        return "Hello";
-    }
 }

@@ -7,6 +7,7 @@ import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.kafka.telemetry.collector.config.KafkaProperties;
 
@@ -14,6 +15,7 @@ import java.util.Properties;
 
 @Slf4j
 @Component
+@EnableConfigurationProperties(KafkaProperties.class)
 public class ProducerBrokerKafka implements ProducerBroker {
     private final Producer<String, SpecificRecordBase> producer;
 
