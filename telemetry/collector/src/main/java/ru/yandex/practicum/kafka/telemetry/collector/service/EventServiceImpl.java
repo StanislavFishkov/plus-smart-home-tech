@@ -24,7 +24,6 @@ import static ru.yandex.practicum.kafka.telemetry.collector.util.TimestampProto.
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 @EnableConfigurationProperties(CollectorTopics.class)
 public class EventServiceImpl implements EventService {
     private final ProducerBroker producerBroker;
