@@ -8,8 +8,8 @@ import ru.yandex.practicum.grpc.telemetry.event.SensorEventProto;
 import ru.yandex.practicum.kafka.telemetry.collector.broker.ProducerBroker;
 import ru.yandex.practicum.kafka.telemetry.collector.config.CollectorTopics;
 import ru.yandex.practicum.kafka.telemetry.collector.exception.ValidationException;
-import ru.yandex.practicum.kafka.telemetry.collector.mapper.HubEventHandler;
-import ru.yandex.practicum.kafka.telemetry.collector.mapper.SensorEventHandler;
+import ru.yandex.practicum.kafka.telemetry.collector.mapper.hub.HubEventHandler;
+import ru.yandex.practicum.kafka.telemetry.collector.mapper.sensor.SensorEventHandler;
 
 import ru.yandex.practicum.kafka.telemetry.event.HubEventAvro;
 import ru.yandex.practicum.kafka.telemetry.event.SensorEventAvro;

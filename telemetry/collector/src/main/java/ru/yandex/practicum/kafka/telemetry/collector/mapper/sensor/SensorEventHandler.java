@@ -1,4 +1,4 @@
-package ru.yandex.practicum.kafka.telemetry.collector.mapper;
+package ru.yandex.practicum.kafka.telemetry.collector.mapper.sensor;
 
 import ru.yandex.practicum.grpc.telemetry.event.SensorEventProto;
 import ru.yandex.practicum.kafka.telemetry.event.SensorEventAvro;

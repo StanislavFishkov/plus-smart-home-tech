@@ -1,17 +1,17 @@
-package ru.yandex.practicum.kafka.telemetry.collector.mapper;
+package ru.yandex.practicum.kafka.telemetry.collector.mapper.sensor;
 
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.grpc.telemetry.event.SensorEventProto;
 import ru.yandex.practicum.kafka.telemetry.event.SensorEventAvro;
-import ru.yandex.practicum.kafka.telemetry.event.TemperatureSensorAvro;
+import ru.yandex.practicum.kafka.telemetry.event.SwitchSensorAvro;
 
 import static ru.yandex.practicum.kafka.telemetry.collector.util.TimestampProto.toInstant;
 
 @Component
-public class TemperatureSensorEventHandler implements SensorEventHandler {
+public class SwitchSensorEventHandler implements SensorEventHandler {
     @Override
     public SensorEventProto.PayloadCase getMessageType() {
-        return SensorEventProto.PayloadCase.TEMPERATURE_SENSOR;
+        return SensorEventProto.PayloadCase.SWITCH_SENSOR;
     }
 
     @Override
@@ -20,9 +20,8 @@ public class TemperatureSensorEventHandler implements SensorEventHandler {
                 .setId(event.getId())
                 .setHubId(event.getHubId())
                 .setTimestamp(toInstant(event.getTimestamp()))
-                .setPayload(TemperatureSensorAvro.newBuilder()
-                        .setTemperatureC(event.getTemperatureSensor().getTemperatureC())
-                        .setTemperatureF(event.getTemperatureSensor().getTemperatureF())
+                .setPayload(SwitchSensorAvro.newBuilder()
+                        .setState(event.getSwitchSensor().getState())
                         .build())
                 .build();
     }
