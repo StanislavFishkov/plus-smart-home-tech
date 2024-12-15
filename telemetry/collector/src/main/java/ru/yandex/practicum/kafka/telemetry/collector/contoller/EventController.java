@@ -45,7 +45,7 @@ public class EventController extends CollectorControllerGrpc.CollectorController
     public void collectHubEvent(HubEventProto request, StreamObserver<Empty> responseObserver) {
         log.info("collectHubEvent invoked with request: {}", request);
         try {
-            //eventService.collectSensorEvent(request);
+            eventService.collectHubEvent(request);
             // после обработки события возвращаем ответ клиенту
             responseObserver.onNext(Empty.getDefaultInstance());
             // и завершаем обработку запроса

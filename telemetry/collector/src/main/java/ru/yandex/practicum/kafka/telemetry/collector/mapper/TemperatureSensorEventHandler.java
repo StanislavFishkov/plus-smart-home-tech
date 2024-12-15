@@ -3,15 +3,15 @@ package ru.yandex.practicum.kafka.telemetry.collector.mapper;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.grpc.telemetry.event.SensorEventProto;
 import ru.yandex.practicum.kafka.telemetry.event.SensorEventAvro;
-import ru.yandex.practicum.kafka.telemetry.event.SwitchSensorAvro;
+import ru.yandex.practicum.kafka.telemetry.event.TemperatureSensorAvro;
 
 import static ru.yandex.practicum.kafka.telemetry.collector.util.TimestampProto.toInstant;
 
 @Component
-public class SwitchSensorEventHandler implements SensorEventHandler {
+public class TemperatureSensorEventHandler implements SensorEventHandler {
     @Override
     public SensorEventProto.PayloadCase getMessageType() {
-        return SensorEventProto.PayloadCase.SWITCH_SENSOR;
+        return SensorEventProto.PayloadCase.TEMPERATURE_SENSOR;
     }
 
     @Override
@@ -20,8 +20,9 @@ public class SwitchSensorEventHandler implements SensorEventHandler {
                 .setId(event.getId())
                 .setHubId(event.getHubId())
                 .setTimestamp(toInstant(event.getTimestamp()))
-                .setPayload(SwitchSensorAvro.newBuilder()
-                        .setState(event.getSwitchSensor().getState())
+                .setPayload(TemperatureSensorAvro.newBuilder()
+                        .setTemperatureC(event.getTemperatureSensor().getTemperatureC())
+                        .setTemperatureF(event.getTemperatureSensor().getTemperatureF())
                         .build())
                 .build();
     }
