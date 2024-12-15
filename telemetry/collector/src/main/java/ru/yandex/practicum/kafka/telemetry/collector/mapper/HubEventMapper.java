@@ -2,7 +2,7 @@ package ru.yandex.practicum.kafka.telemetry.collector.mapper;
 
 import org.apache.avro.specific.SpecificRecordBase;
 import ru.yandex.practicum.kafka.telemetry.collector.dto.hub.*;
-import ru.yandex.practicum.kafka.telemetry.collector.error.exception.ValidationException;
+import ru.yandex.practicum.kafka.telemetry.collector.exception.ValidationException;
 import ru.yandex.practicum.kafka.telemetry.event.*;
 
 public class HubEventMapper {

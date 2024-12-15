@@ -1,10 +1,10 @@
 package ru.yandex.practicum.kafka.telemetry.collector.service;
 
-import ru.yandex.practicum.kafka.telemetry.collector.dto.hub.HubEvent;
-import ru.yandex.practicum.kafka.telemetry.collector.dto.sensor.SensorEvent;
+import ru.yandex.practicum.grpc.telemetry.event.HubEventProto;
+import ru.yandex.practicum.grpc.telemetry.event.SensorEventProto;
 
 public interface EventService {
-    void collectSensorEvent(SensorEvent event);
+    void collectSensorEvent(SensorEventProto event);
 
-    void collectHubEvent(HubEvent event);
+    void collectHubEvent(HubEventProto event);
 }
