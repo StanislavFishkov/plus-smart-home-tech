@@ -1,0 +1,6 @@
+analyzer:
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer-group-id: analyzer.snapshots
+  topic:
+    sensor-snapshots-topic: telemetry.snapshots.v1
