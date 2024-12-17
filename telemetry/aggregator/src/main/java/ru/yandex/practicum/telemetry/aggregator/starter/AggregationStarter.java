@@ -114,7 +114,7 @@ public class AggregationStarter {
     }
 
     private void handleRecord(ConsumerRecord<String, SensorEventAvro> record) throws InterruptedException {
-        log.info("топик = {}, партиция = {}, смещение = {}, значение: ",
+        log.info("топик = {}, партиция = {}, смещение = {}, значение: {}",
                 record.topic(), record.partition(), record.offset(), record.value());
 
         Optional<SensorsSnapshotAvro> snapshot = snapshotService.updateState(record.value());

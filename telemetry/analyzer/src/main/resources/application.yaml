@@ -20,7 +20,8 @@ logging:
 analyzer:
   kafka:
     bootstrap-servers: localhost:9092
-    consumer-group-id: analyzer.snapshots
+    hubs-consumer-group-id: analyzer.hubs
+    snapshots-consumer-group-id: analyzer.snapshots
   topic:
     hub-events-topic: telemetry.hubs.v1
     sensor-snapshots-topic: telemetry.snapshots.v1
