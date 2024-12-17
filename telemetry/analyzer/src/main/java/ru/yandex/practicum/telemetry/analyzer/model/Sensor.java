@@ -7,6 +7,7 @@ import lombok.*;
 @Table(name = "sensors")
 @Getter
 @Setter
+@ToString(of = {"id", "hubId"})
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor

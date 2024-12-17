@@ -7,6 +7,7 @@ import lombok.*;
 @Table(name = "actions")
 @Getter
 @Setter
+@ToString(of = {"id", "type", "value"})
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,4 +22,12 @@ public class Action {
 
     @Column(name = "value")
     private Integer value;
+
+    @ManyToOne
+    @JoinColumn(name = "sensor_id")
+    private Sensor sensor;
+
+    @ManyToOne
+    @JoinColumn(name = "scenario_id")
+    private Scenario scenario;
 }

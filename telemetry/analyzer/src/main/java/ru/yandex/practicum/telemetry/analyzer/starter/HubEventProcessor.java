@@ -8,11 +8,11 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.consumer.OffsetAndMetadata;
 import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.errors.WakeupException;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.kafka.telemetry.event.HubEventAvro;
 import ru.yandex.practicum.telemetry.analyzer.config.AnalyzerTopics;
+import ru.yandex.practicum.telemetry.analyzer.service.HubEventService;
 
 import java.time.Duration;
 import java.util.HashMap;
@@ -27,6 +27,8 @@ public class HubEventProcessor implements Runnable {
     private final KafkaConsumer<String, HubEventAvro> consumer;
     private final AnalyzerTopics analyzerTopics;
     private final Map<TopicPartition, OffsetAndMetadata> currentOffsets = new HashMap<>();
+
+    private final HubEventService hubEventService;
 
     private static final Duration CONSUME_ATTEMPT_TIMEOUT = Duration.ofMillis(1000);
 
@@ -84,6 +86,6 @@ public class HubEventProcessor implements Runnable {
     private void handleRecord(ConsumerRecord<String, HubEventAvro> record) throws InterruptedException {
         log.info("Analyzer: record read. topic = {}, partition = {}, offset = {}, value: {}",
                 record.topic(), record.partition(), record.offset(), record.value());
-
+        hubEventService.handleHubEvent(record.value());
     }
 }

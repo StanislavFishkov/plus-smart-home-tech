@@ -10,9 +10,9 @@ import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.errors.WakeupException;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.kafka.telemetry.event.HubEventAvro;
 import ru.yandex.practicum.kafka.telemetry.event.SensorsSnapshotAvro;
 import ru.yandex.practicum.telemetry.analyzer.config.AnalyzerTopics;
+import ru.yandex.practicum.telemetry.analyzer.service.SnapshotService;
 
 import java.time.Duration;
 import java.util.HashMap;
@@ -27,6 +27,8 @@ public class SnapshotProcessor {
     private final KafkaConsumer<String, SensorsSnapshotAvro> consumer;
     private final AnalyzerTopics analyzerTopics;
     private final Map<TopicPartition, OffsetAndMetadata> currentOffsets = new HashMap<>();
+
+    private final SnapshotService snapshotService;
 
     private static final Duration CONSUME_ATTEMPT_TIMEOUT = Duration.ofMillis(1000);
 
@@ -83,6 +85,6 @@ public class SnapshotProcessor {
     private void handleRecord(ConsumerRecord<String, SensorsSnapshotAvro> record) throws InterruptedException {
         log.info("Analyzer: record read. topic = {}, partition = {}, offset = {}, value: {}",
                 record.topic(), record.partition(), record.offset(), record.value());
-
+        snapshotService.handleSnapshot(record.value());
     }
 }
