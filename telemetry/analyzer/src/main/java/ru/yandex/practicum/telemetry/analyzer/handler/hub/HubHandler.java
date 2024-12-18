@@ -4,5 +4,6 @@ import ru.yandex.practicum.kafka.telemetry.event.HubEventAvro;
 
 public interface HubHandler {
     String getHandledClassName();
+
     void handle(HubEventAvro hubEventAvro);
 }

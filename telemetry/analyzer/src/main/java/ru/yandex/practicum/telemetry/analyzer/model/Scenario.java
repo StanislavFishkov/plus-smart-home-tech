@@ -25,7 +25,7 @@ public class Scenario {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "scenario")
+    @OneToMany(mappedBy = "scenario", fetch = FetchType.EAGER)
     @Builder.Default
     private List<Condition> conditions = new ArrayList<>();
 

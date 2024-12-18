@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class HubEventServiceImpl implements HubEventService {
     private final Map<String, HubHandler> hubHandlers;
 
-    public HubEventServiceImpl (Set<HubHandler> hubHandlers) {
+    public HubEventServiceImpl(Set<HubHandler> hubHandlers) {
         this.hubHandlers = hubHandlers.stream()
                 .collect(Collectors.toMap(HubHandler::getHandledClassName, Function.identity()));
     }

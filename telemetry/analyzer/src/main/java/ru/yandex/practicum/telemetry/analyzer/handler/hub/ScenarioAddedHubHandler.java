@@ -86,7 +86,9 @@ public class ScenarioAddedHubHandler implements HubHandler {
             conditions.add(Condition.builder()
                     .type(ConditionType.valueOf(conditionAvro.getType().name()))
                     .operation(ConditionOperation.valueOf(conditionAvro.getOperation().name()))
-                    .value((Integer) conditionAvro.getValue())
+                    .value(conditionAvro.getValue() instanceof Boolean ?
+                            Boolean.compare((Boolean) conditionAvro.getValue(),false) :
+                            (Integer) conditionAvro.getValue())
                     .sensor(sensors.get(conditionAvro.getSensorId()))
                     .scenario(scenario)
                     .build()
