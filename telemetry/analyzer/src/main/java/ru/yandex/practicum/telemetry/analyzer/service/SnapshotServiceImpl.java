@@ -19,6 +19,7 @@ import ru.yandex.practicum.telemetry.analyzer.repository.ScenarioRepository;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -31,22 +32,23 @@ import java.util.stream.Collectors;
 public class SnapshotServiceImpl implements SnapshotService {
     private final ScenarioRepository scenarioRepository;
     private final Map<String, ConditionHandler> conditionHandlers;
+    private final HubRouterControllerBlockingStub hubRouterClient;
 
-    @GrpcClient("hub-router")
-    private HubRouterControllerBlockingStub hubRouterClient;
-
-    private Instant lastHandledTimestamp = Instant.EPOCH;
+    private final Map<String, Instant> lastHandledTimestamps = new HashMap<>();
 
     public SnapshotServiceImpl(ScenarioRepository scenarioRepository,
+                               @GrpcClient("hub-router") HubRouterControllerBlockingStub hubRouterClient,
                                Set<ConditionHandler> conditionHandlers) {
         this.scenarioRepository = scenarioRepository;
         this.conditionHandlers = conditionHandlers.stream()
                 .collect(Collectors.toMap(ConditionHandler::getHandledClassName, Function.identity()));
+        this.hubRouterClient = hubRouterClient;
     }
 
     @Override
     public void handleSnapshot(SensorsSnapshotAvro snapshotAvro) {
-        if (lastHandledTimestamp.isAfter(snapshotAvro.getTimestamp())) {
+        if (lastHandledTimestamps.containsKey(snapshotAvro.getHubId())
+                && lastHandledTimestamps.get(snapshotAvro.getHubId()).isAfter(snapshotAvro.getTimestamp())) {
             log.info("Snapshot timestamp is before last handled snapshot and thus will not be handled: {}", snapshotAvro);
             return;
         }
@@ -59,7 +61,7 @@ public class SnapshotServiceImpl implements SnapshotService {
                 .forEach(s -> handleActions(s.getActions(), s));
 
         log.info("Snapshot has been handled: {}", snapshotAvro);
-        lastHandledTimestamp = snapshotAvro.getTimestamp();
+        lastHandledTimestamps.put(snapshotAvro.getHubId(), snapshotAvro.getTimestamp());
     }
 
     private boolean checkConditionsBySensorsState(List<Condition> conditions, Map<String, SensorStateAvro> sensorsState) {

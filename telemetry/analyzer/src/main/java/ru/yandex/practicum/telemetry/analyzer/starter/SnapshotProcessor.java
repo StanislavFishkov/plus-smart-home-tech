@@ -46,7 +46,7 @@ public class SnapshotProcessor {
                 for (ConsumerRecord<String, SensorsSnapshotAvro> record : records) {
                     handleRecord(record);
 
-                    manageOffsets(record, count, consumer);
+                    manageOffsets(record, count);
                     count++;
                 }
                 // fix max offsets
@@ -66,8 +66,7 @@ public class SnapshotProcessor {
         }
     }
 
-    private void manageOffsets(ConsumerRecord<String, SensorsSnapshotAvro> record, int count,
-                               KafkaConsumer<String, SensorsSnapshotAvro> consumer) {
+    private void manageOffsets(ConsumerRecord<String, SensorsSnapshotAvro> record, int count) {
         currentOffsets.put(
                 new TopicPartition(record.topic(), record.partition()),
                 new OffsetAndMetadata(record.offset() + 1)

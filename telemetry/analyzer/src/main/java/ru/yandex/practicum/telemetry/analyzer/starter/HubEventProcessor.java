@@ -47,7 +47,7 @@ public class HubEventProcessor implements Runnable {
                 for (ConsumerRecord<String, HubEventAvro> record : records) {
                     handleRecord(record);
 
-                    manageOffsets(record, count, consumer);
+                    manageOffsets(record, count);
                     count++;
                 }
                 // fix max offsets
@@ -67,8 +67,7 @@ public class HubEventProcessor implements Runnable {
         }
     }
 
-    private void manageOffsets(ConsumerRecord<String, HubEventAvro> record, int count,
-                               KafkaConsumer<String, HubEventAvro> consumer) {
+    private void manageOffsets(ConsumerRecord<String, HubEventAvro> record, int count) {
         currentOffsets.put(
                 new TopicPartition(record.topic(), record.partition()),
                 new OffsetAndMetadata(record.offset() + 1)
