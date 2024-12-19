@@ -128,3 +128,6 @@ $RECYCLE.BIN/
 
 # exclude checkstyle
 checkstyle
+
+# exclude databases persisted data
+db/
