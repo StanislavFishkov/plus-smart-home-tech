@@ -33,3 +33,32 @@ services:
                              --partitions 1 --replication-factor 1 --if-not-exists \
                              --bootstrap-server kafka:29092'"
     init: true
+
+  kafka-ui:
+    container_name: kafka-ui
+    image: provectuslabs/kafka-ui:latest
+    ports:
+      - 4040:8080
+    depends_on:
+      - kafka
+    environment:
+      DYNAMIC_CONFIG_ENABLED: 'true'
+      KAFKA_CLUSTERS_0_NAME: smart-home-tech
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
+
+  analyzer-db:
+    image: postgres:16.1
+    container_name: analyzer-db
+    ports:
+      - "3333:5432"
+    environment:
+      - POSTGRES_DB=AnalyzerDB
+      - POSTGRES_USER=dbuser
+      - POSTGRES_PASSWORD=12345
+#    volumes:
+#      - ./db/analyzer-db:/var/lib/postgresql/data
+    healthcheck:
+      test: pg_isready -q -d $$POSTGRES_DB -U $$POSTGRES_USER
+      timeout: 5s
+      interval: 5s
+      retries: 10
