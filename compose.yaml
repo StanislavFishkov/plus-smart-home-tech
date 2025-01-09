@@ -69,13 +69,14 @@ services:
     ports:
       - "4444:5432"
     environment:
-      - POSTGRES_DB=CommerceDB
-      - POSTGRES_USER=dbuser
-      - POSTGRES_PASSWORD=12345
-    #    volumes:
+      POSTGRES_MULTIPLE_DATABASES: shopping_store, shopping_cart, warehouse
+      POSTGRES_USER: dbuser
+      POSTGRES_PASSWORD: 12345
+    volumes:
+      - ./docker-init:/docker-entrypoint-initdb.d
     #      - ./db/commerce-db:/var/lib/postgresql/data
     healthcheck:
-      test: pg_isready -q -d $$POSTGRES_DB -U $$POSTGRES_USER
+      test: pg_isready -q -U $$POSTGRES_USER
       timeout: 5s
       interval: 5s
       retries: 10

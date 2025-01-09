@@ -1,6 +1,9 @@
+server:
+  port: 0
+
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:4444/CommerceDB
+    url: jdbc:postgresql://localhost:4444/shopping_store
     username: dbuser
     password: 12345
   sql:
