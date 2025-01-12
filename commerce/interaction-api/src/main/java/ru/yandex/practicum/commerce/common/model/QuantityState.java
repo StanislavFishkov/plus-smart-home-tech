@@ -1,4 +1,4 @@
-package ru.yandex.practicum.commerce.shoppping.store.model;
+package ru.yandex.practicum.commerce.common.model;
 
 public enum QuantityState {
     ENDED,

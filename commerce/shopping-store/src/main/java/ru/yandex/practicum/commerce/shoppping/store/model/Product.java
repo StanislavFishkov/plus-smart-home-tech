@@ -4,7 +4,12 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.UuidGenerator;
+import org.hibernate.proxy.HibernateProxy;
+import ru.yandex.practicum.commerce.common.model.ProductCategory;
+import ru.yandex.practicum.commerce.common.model.ProductState;
+import ru.yandex.practicum.commerce.common.model.QuantityState;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -47,4 +52,24 @@ public class Product {
 
     @Column(name = "price")
     Double price;
+
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        Class<?> oEffectiveClass = o instanceof HibernateProxy ?
+                ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy ?
+                ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass) return false;
+        Product product = (Product) o;
+        return getProductId() != null && Objects.equals(getProductId(), product.getProductId());
+    }
+
+    @Override
+    public final int hashCode() {
+        return this instanceof HibernateProxy
+                ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode()
+                : getClass().hashCode();
+    }
 }
