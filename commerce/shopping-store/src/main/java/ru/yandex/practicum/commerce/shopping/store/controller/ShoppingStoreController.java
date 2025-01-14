@@ -31,7 +31,7 @@ public class ShoppingStoreController {
 
     @GetMapping("/{productId}")
     public ProductDto getProduct(@PathVariable("productId") UUID productId) {
-        log.trace("PUT /api/v1/shopping-store/{productId} with productId: {}", productId);
+        log.trace("GET /api/v1/shopping-store/{productId} with productId: {}", productId);
         return productService.get(productId);
     }
 
