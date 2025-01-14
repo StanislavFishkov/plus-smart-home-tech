@@ -23,10 +23,10 @@ import java.util.UUID;
 public class Product {
     @Id
     @UuidGenerator
-    @Column(name = "product_id")
+    @Column(name = "id")
     UUID productId;
 
-    @Column(name = "product_name")
+    @Column(name = "name")
     String productName;
 
     @Column(name = "description")
