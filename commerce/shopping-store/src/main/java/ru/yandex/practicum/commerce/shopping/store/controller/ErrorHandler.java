@@ -1,4 +1,4 @@
-package ru.yandex.practicum.commerce.shoppping.store.controller;
+package ru.yandex.practicum.commerce.shopping.store.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;

@@ -1,4 +1,4 @@
-package ru.yandex.practicum.commerce.shoppping.store.controller;
+package ru.yandex.practicum.commerce.shopping.store.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +10,7 @@ import ru.yandex.practicum.commerce.common.dto.PageableDto;
 import ru.yandex.practicum.commerce.common.dto.product.UpdateProductDto;
 import ru.yandex.practicum.commerce.common.dto.product.UpdateProductQuantityStateDto;
 import ru.yandex.practicum.commerce.common.model.ProductCategory;
-import ru.yandex.practicum.commerce.shoppping.store.service.ProductService;
+import ru.yandex.practicum.commerce.shopping.store.service.ProductService;
 
 import java.util.List;
 import java.util.UUID;

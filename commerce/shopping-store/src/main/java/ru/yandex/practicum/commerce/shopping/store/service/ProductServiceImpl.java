@@ -1,4 +1,4 @@
-package ru.yandex.practicum.commerce.shoppping.store.service;
+package ru.yandex.practicum.commerce.shopping.store.service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,9 +13,9 @@ import ru.yandex.practicum.commerce.common.error.exception.ValidationException;
 import ru.yandex.practicum.commerce.common.model.ProductCategory;
 import ru.yandex.practicum.commerce.common.dto.PageableDto;
 import ru.yandex.practicum.commerce.common.model.ProductState;
-import ru.yandex.practicum.commerce.shoppping.store.mapper.ProductMapper;
-import ru.yandex.practicum.commerce.shoppping.store.model.Product;
-import ru.yandex.practicum.commerce.shoppping.store.repository.ProductRepository;
+import ru.yandex.practicum.commerce.shopping.store.mapper.ProductMapper;
+import ru.yandex.practicum.commerce.shopping.store.model.Product;
+import ru.yandex.practicum.commerce.shopping.store.repository.ProductRepository;
 import ru.yandex.practicum.commerce.common.util.PagingUtil;
 
 import java.util.List;
