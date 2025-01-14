@@ -1,9 +1,7 @@
 package ru.yandex.practicum.commerce.common.dto.product;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 import ru.yandex.practicum.commerce.common.model.ProductCategory;
 import ru.yandex.practicum.commerce.common.model.ProductState;
 import ru.yandex.practicum.commerce.common.model.QuantityState;
@@ -14,6 +12,7 @@ import java.util.UUID;
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductDto {
     UUID productId;
 

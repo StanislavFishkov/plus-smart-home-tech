@@ -25,38 +25,38 @@ public class ShoppingStoreController {
 
     @PutMapping
     public ProductDto createProduct(@Valid @RequestBody NewProductDto newProductDto) {
-        log.trace("PUT /api/v1/shopping-store with body: {}", newProductDto);
+        log.trace("PUT /api/v1/shopping-store with body {}", newProductDto);
         return productService.create(newProductDto);
     }
 
     @GetMapping("/{productId}")
     public ProductDto getProduct(@PathVariable("productId") UUID productId) {
-        log.trace("PUT /api/v1/shopping-store/{productId} with productId: {}", productId);
+        log.trace("GET /api/v1/shopping-store/{productId} with productId {}", productId);
         return productService.get(productId);
     }
 
     @GetMapping
     public List<ProductDto> getProducts(@RequestParam("category") ProductCategory productCategory,
                                 @Valid PageableDto pageableDto) {
-        log.trace("GET /api/v1/shopping-store with category: {}, and PageableDto: {}", productCategory, pageableDto);
+        log.trace("GET /api/v1/shopping-store with category {} and PageableDto {}", productCategory, pageableDto);
         return productService.get(productCategory, pageableDto);
     }
 
     @PostMapping
     public ProductDto updateProduct(@Valid @RequestBody UpdateProductDto updateProductDto) {
-        log.trace("POST /api/v1/shopping-store with body: {}", updateProductDto);
+        log.trace("POST /api/v1/shopping-store with body {}", updateProductDto);
         return productService.update(updateProductDto);
     }
 
     @PostMapping("/quantityState")
     public boolean setProductQuantityState(@Valid UpdateProductQuantityStateDto updateProductQuantityStateDto) {
-        log.trace("POST /api/v1/shopping-store/quantityState with body/parameters: {}", updateProductQuantityStateDto);
+        log.trace("POST /api/v1/shopping-store/quantityState with body/parameters {}", updateProductQuantityStateDto);
         return productService.setQuantityState(updateProductQuantityStateDto);
     }
 
     @PostMapping("/removeProductFromStore")
     public boolean removeProductFromStore(@RequestBody UUID productId) {
-        log.trace("POST /api/v1/shopping-store/removeProductFromStore with body: {}", productId);
+        log.trace("POST /api/v1/shopping-store/removeProductFromStore with body {}", productId);
         return productService.removeFromStore(productId);
     }
 }

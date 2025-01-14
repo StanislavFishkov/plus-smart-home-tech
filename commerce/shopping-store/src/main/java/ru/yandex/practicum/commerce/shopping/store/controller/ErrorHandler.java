@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
 import ru.yandex.practicum.commerce.common.error.ApiError;
 import ru.yandex.practicum.commerce.common.error.exception.ConflictDataException;
-import ru.yandex.practicum.commerce.common.error.exception.InternalServerException;
 import ru.yandex.practicum.commerce.common.error.exception.NotFoundException;
 import ru.yandex.practicum.commerce.common.error.exception.ValidationException;
 
@@ -53,17 +52,6 @@ public class ErrorHandler {
         return new ApiError(
                 HttpStatus.BAD_REQUEST,
                 "Incorrectly made request.",
-                e.getMessage(),
-                getStackTrace(e));
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ApiError handleInternalServerException(final InternalServerException e) {
-        log.error("{} {}", HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
-        return new ApiError(
-                HttpStatus.INTERNAL_SERVER_ERROR,
-                "Internal server error.",
                 e.getMessage(),
                 getStackTrace(e));
     }

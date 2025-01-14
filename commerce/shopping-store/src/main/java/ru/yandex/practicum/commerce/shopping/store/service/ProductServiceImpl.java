@@ -33,10 +33,10 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public ProductDto create(NewProductDto newProductDto) {
         if (newProductDto.getProductId() != null && productRepository.existsById(newProductDto.getProductId()))
-            throw new ValidationException("Product already exists with id: " + newProductDto.getProductId());
+            throw new ValidationException("Product already exists with id " + newProductDto.getProductId());
 
         Product product = productRepository.save(productMapper.toEntity(newProductDto));
-        log.info("Product is created: {} with id: {}", newProductDto, product.getProductId());
+        log.info("Product is created: {} with id {}", newProductDto, product.getProductId());
         return productMapper.toDto(product);
     }
 
@@ -57,7 +57,7 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public ProductDto update(UpdateProductDto updateProductDto) {
         if (!productRepository.existsById(updateProductDto.getProductId()))
-            throw new NotFoundException("Product doesn't exists with id: " + updateProductDto.getProductId());
+            throw new NotFoundException("Product doesn't exists with id " + updateProductDto.getProductId());
 
         Product product = productRepository.save(productMapper.toEntity(updateProductDto));
         log.info("Product is updated: {}", updateProductDto);
@@ -80,12 +80,12 @@ public class ProductServiceImpl implements ProductService {
         Product product = checkAndGetUserById(productId);
         product.setProductState(ProductState.DEACTIVATE);
         productRepository.save(product);
-        log.info("Product is removed from the store (deactivated) with id: {}", productId);
+        log.info("Product is removed from the store (deactivated) with id {}", productId);
         return product.getProductState() == ProductState.DEACTIVATE;
     }
 
     private Product checkAndGetUserById(UUID productId) {
         return productRepository.findById(productId)
-                .orElseThrow(() -> new NotFoundException("Product doesn't exist with id: " + productId));
+                .orElseThrow(() -> new NotFoundException("Product doesn't exist with id " + productId));
     }
 }
