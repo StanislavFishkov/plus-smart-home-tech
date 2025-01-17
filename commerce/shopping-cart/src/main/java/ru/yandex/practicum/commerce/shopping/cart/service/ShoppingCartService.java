@@ -1,6 +1,6 @@
 package ru.yandex.practicum.commerce.shopping.cart.service;
 
-import ru.yandex.practicum.commerce.common.dto.shoppingcart.BookedProductsDto;
+import ru.yandex.practicum.commerce.common.dto.warehouse.BookedProductsDto;
 import ru.yandex.practicum.commerce.common.dto.shoppingcart.ShoppingCartDto;
 import ru.yandex.practicum.commerce.common.dto.shoppingcart.UpdateProductQuantityDto;
 

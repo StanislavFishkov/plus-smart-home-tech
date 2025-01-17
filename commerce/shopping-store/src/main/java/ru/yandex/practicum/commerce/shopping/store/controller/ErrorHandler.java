@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
 import ru.yandex.practicum.commerce.common.error.ApiError;
-import ru.yandex.practicum.commerce.common.error.exception.ConflictDataException;
 import ru.yandex.practicum.commerce.common.error.exception.NotFoundException;
 import ru.yandex.practicum.commerce.common.error.exception.ValidationException;
 
@@ -33,9 +32,8 @@ public class ErrorHandler {
                 getStackTrace(e));
     }
 
-    @ExceptionHandler({ConflictDataException.class, DataIntegrityViolationException.class})
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ApiError handleDataIntegrityViolationException(final Exception e) {
+    public ApiError handleDataIntegrityViolationException(final DataIntegrityViolationException e) {
         log.error("{} {}", HttpStatus.CONFLICT, e.getMessage(), e);
         return new ApiError(
                 HttpStatus.CONFLICT,

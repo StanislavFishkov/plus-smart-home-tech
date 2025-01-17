@@ -1,10 +1,10 @@
 package ru.yandex.practicum.commerce.shopping.cart.service;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.yandex.practicum.commerce.common.dto.shoppingcart.BookedProductsDto;
+import ru.yandex.practicum.commerce.common.dto.warehouse.BookedProductsDto;
 import ru.yandex.practicum.commerce.common.dto.shoppingcart.ShoppingCartDto;
 import ru.yandex.practicum.commerce.common.dto.shoppingcart.UpdateProductQuantityDto;
 import ru.yandex.practicum.commerce.common.error.exception.NotFoundException;
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ShoppingCartServiceImpl implements ShoppingCartService {
     private final ShoppingCartRepository shoppingCartRepository;
     private final ShoppingCartProductRepository productRepository;
@@ -97,6 +97,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
+    @Transactional
     public ShoppingCartDto updateProductQuantity(String username, UpdateProductQuantityDto updateProductQuantityDto) {
         ShoppingCart shoppingCart = getActiveShoppingCartByUsername(username);
 

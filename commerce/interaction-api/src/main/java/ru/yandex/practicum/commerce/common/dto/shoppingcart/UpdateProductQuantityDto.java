@@ -16,7 +16,7 @@ public class UpdateProductQuantityDto {
     @NotNull
     UUID productId;
 
-    @Min(0)
+    @Min(1)
     @NotNull
     Integer newQuantity;
 }

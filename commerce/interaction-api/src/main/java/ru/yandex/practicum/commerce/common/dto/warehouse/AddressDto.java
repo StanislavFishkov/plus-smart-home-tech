@@ -1,4 +1,4 @@
-package ru.yandex.practicum.commerce.common.dto.shoppingcart;
+package ru.yandex.practicum.commerce.common.dto.warehouse;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -8,10 +8,14 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class BookedProductsDto {
-    Double deliveryWeight;
+public class AddressDto {
+    String country;
 
-    Double deliveryVolume;
+    String city;
 
-    Boolean fragile;
+    String street;
+
+    String house;
+
+    String flat;
 }

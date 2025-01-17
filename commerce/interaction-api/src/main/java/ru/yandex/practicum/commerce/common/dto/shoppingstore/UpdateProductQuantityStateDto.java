@@ -1,11 +1,10 @@
-package ru.yandex.practicum.commerce.common.dto.shoppingcart;
+package ru.yandex.practicum.commerce.common.dto.shoppingstore;
 
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import ru.yandex.practicum.commerce.common.model.QuantityState;
 
-import java.util.Map;
 import java.util.UUID;
 
 @Data
@@ -13,9 +12,10 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ShoppingCartDto {
+public class UpdateProductQuantityStateDto {
     @NotNull
-    UUID shoppingCartId;
+    UUID productId;
 
-    Map<@NotNull UUID, @Min(1) Integer> products;
+    @NotNull
+    QuantityState quantityState;
 }

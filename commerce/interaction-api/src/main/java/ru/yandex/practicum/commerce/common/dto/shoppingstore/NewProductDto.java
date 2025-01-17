@@ -1,4 +1,4 @@
-package ru.yandex.practicum.commerce.common.dto.product;
+package ru.yandex.practicum.commerce.common.dto.shoppingstore;
 
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -14,8 +14,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UpdateProductDto {
-    @NotNull
+public class NewProductDto {
     UUID productId;
 
     @NotBlank

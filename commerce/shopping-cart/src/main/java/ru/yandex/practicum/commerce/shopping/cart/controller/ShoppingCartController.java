@@ -4,7 +4,7 @@ import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.commerce.common.dto.shoppingcart.BookedProductsDto;
+import ru.yandex.practicum.commerce.common.dto.warehouse.BookedProductsDto;
 import ru.yandex.practicum.commerce.common.dto.shoppingcart.ShoppingCartDto;
 import ru.yandex.practicum.commerce.common.dto.shoppingcart.UpdateProductQuantityDto;
 import ru.yandex.practicum.commerce.shopping.cart.service.ShoppingCartService;

@@ -1,13 +1,13 @@
 package ru.yandex.practicum.commerce.shopping.store.service;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.yandex.practicum.commerce.common.dto.product.NewProductDto;
-import ru.yandex.practicum.commerce.common.dto.product.ProductDto;
-import ru.yandex.practicum.commerce.common.dto.product.UpdateProductDto;
-import ru.yandex.practicum.commerce.common.dto.product.UpdateProductQuantityStateDto;
+import ru.yandex.practicum.commerce.common.dto.shoppingstore.NewProductDto;
+import ru.yandex.practicum.commerce.common.dto.shoppingstore.ProductDto;
+import ru.yandex.practicum.commerce.common.dto.shoppingstore.UpdateProductDto;
+import ru.yandex.practicum.commerce.common.dto.shoppingstore.UpdateProductQuantityStateDto;
 import ru.yandex.practicum.commerce.common.error.exception.NotFoundException;
 import ru.yandex.practicum.commerce.common.error.exception.ValidationException;
 import ru.yandex.practicum.commerce.common.model.ProductCategory;
@@ -23,7 +23,7 @@ import java.util.UUID;
 
 @Slf4j
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;

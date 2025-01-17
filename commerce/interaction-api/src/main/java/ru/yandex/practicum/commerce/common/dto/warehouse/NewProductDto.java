@@ -1,11 +1,10 @@
-package ru.yandex.practicum.commerce.common.dto.shoppingcart;
+package ru.yandex.practicum.commerce.common.dto.warehouse;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Map;
 import java.util.UUID;
 
 @Data
@@ -13,9 +12,17 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ShoppingCartDto {
+public class NewProductDto {
     @NotNull
-    UUID shoppingCartId;
+    UUID productId;
 
-    Map<@NotNull UUID, @Min(1) Integer> products;
+    @NotNull
+    Boolean fragile;
+
+    @NotNull
+    DimensionDto dimension;
+
+    @NotNull
+    @Min(1)
+    Double weight;
 }
