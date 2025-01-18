@@ -3,11 +3,14 @@ package ru.yandex.practicum.commerce.shopping.cart.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 import ru.yandex.practicum.commerce.common.dto.warehouse.BookedProductsDto;
 import ru.yandex.practicum.commerce.common.dto.shoppingcart.ShoppingCartDto;
 import ru.yandex.practicum.commerce.common.dto.shoppingcart.UpdateProductQuantityDto;
 import ru.yandex.practicum.commerce.common.error.exception.NotFoundException;
+import ru.yandex.practicum.commerce.common.feignclient.WarehouseClient;
 import ru.yandex.practicum.commerce.shopping.cart.mapper.ShoppingCartMapper;
 import ru.yandex.practicum.commerce.shopping.cart.model.ShoppingCart;
 import ru.yandex.practicum.commerce.shopping.cart.model.ShoppingCartProduct;
@@ -24,6 +27,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private final ShoppingCartRepository shoppingCartRepository;
     private final ShoppingCartProductRepository productRepository;
     private final ShoppingCartMapper shoppingCartMapper;
+
+    private final PlatformTransactionManager platformTransactionManager;
+    private final WarehouseClient warehouseClient;
 
     @Override
     @Transactional
@@ -114,7 +120,13 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public BookedProductsDto bookProductsInWarehouse(String username) {
-        return null;
+        TransactionTemplate transactionTemplate = new TransactionTemplate(platformTransactionManager);
+        transactionTemplate.setReadOnly(true);
+        ShoppingCartDto shoppingCartDto = transactionTemplate.execute(status -> {
+            return shoppingCartMapper.toDto(getActiveShoppingCartByUsername(username));
+        });
+
+        return warehouseClient.checkProductQuantities(shoppingCartDto);
     }
 
     private ShoppingCart getOrCreateActiveShoppingCartByUsername(String username) {

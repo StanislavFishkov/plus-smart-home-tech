@@ -9,34 +9,39 @@ import ru.yandex.practicum.commerce.common.dto.warehouse.AddProductQuantityDto;
 import ru.yandex.practicum.commerce.common.dto.warehouse.AddressDto;
 import ru.yandex.practicum.commerce.common.dto.warehouse.BookedProductsDto;
 import ru.yandex.practicum.commerce.common.dto.warehouse.NewProductDto;
+import ru.yandex.practicum.commerce.common.feignclient.WarehouseClient;
 import ru.yandex.practicum.commerce.warehouse.service.WarehouseService;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "/api/v1/warehouse")
-public class WarehouseController {
+public class WarehouseController implements WarehouseClient {
     private final WarehouseService warehouseService;
 
     @GetMapping("/address")
+    @Override
     public AddressDto getAddress() {
         log.trace("POST /api/v1/warehouse/address");
         return warehouseService.getAddress();
     }
 
     @PutMapping
+    @Override
     public void createProduct(@Valid @RequestBody NewProductDto newProductDto) {
         log.trace("PUT /api/v1/warehouse with body {}", newProductDto);
         warehouseService.createProduct(newProductDto);
     }
 
     @PostMapping("/add")
+    @Override
     public void addProduct(@Valid @RequestBody AddProductQuantityDto addProductQuantityDto) {
         log.trace("POST /api/v1/warehouse/add with body {}", addProductQuantityDto);
         warehouseService.addProduct(addProductQuantityDto);
     }
 
     @PostMapping("/check")
+    @Override
     public BookedProductsDto checkProductQuantities(@Valid @RequestBody ShoppingCartDto shoppingCartDto) {
         log.trace("POST /api/v1/warehouse/check with body {}", shoppingCartDto);
         return warehouseService.checkProductQuantities(shoppingCartDto);

@@ -1,4 +1,4 @@
-package ru.yandex.practicum.commerce.shopping.store.controller;
+package ru.yandex.practicum.commerce.common.error;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
-import ru.yandex.practicum.commerce.common.error.ApiError;
 import ru.yandex.practicum.commerce.common.error.exception.NotFoundException;
 import ru.yandex.practicum.commerce.common.error.exception.ValidationException;
 
