@@ -19,6 +19,30 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true
+        # убрать символы-разделители из имени circuitbreaker
+        alphanumeric-ids:
+          enabled: true
+
+management:
+  health.circuitbreakers.enabled: true
+  endpoint.health.show-details: always
+
+resilience4j.circuitbreaker:
+  instances:
+    #<feignClientClassName><calledMethod><parameterTypes>
+    WarehouseClientcheckProductQuantitiesShoppingCartDto:
+      registerHealthIndicator: true
+      slidingWindowType: COUNT_BASED
+      slidingWindowSize: 5
+      failureRateThreshold: 50
+      minimumNumberOfCalls: 1
+      waitDurationInOpenState: 10000 # 10 секунд в миллисекундах
+      automaticTransitionFromOpenToHalfOpenEnabled: true
+      permittedNumberOfCallsInHalfOpenState: 3
 
 logging:
   level:

@@ -9,7 +9,7 @@ import ru.yandex.practicum.commerce.common.dto.warehouse.AddressDto;
 import ru.yandex.practicum.commerce.common.dto.warehouse.BookedProductsDto;
 import ru.yandex.practicum.commerce.common.dto.warehouse.NewProductDto;
 
-@FeignClient(name = "warehouse/api/v1/warehouse")
+@FeignClient(name = "warehouse", path = "/api/v1/warehouse", fallback = WarehouseFallback.class)
 public interface WarehouseClient {
     @GetMapping("/address")
     AddressDto getAddress();

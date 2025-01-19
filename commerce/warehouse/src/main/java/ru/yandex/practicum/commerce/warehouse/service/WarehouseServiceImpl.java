@@ -97,7 +97,11 @@ public class WarehouseServiceImpl implements WarehouseService {
                 });
 
         // collect shipping data
-        BookedProductsDto bookedProductsDto = new BookedProductsDto();
+        BookedProductsDto bookedProductsDto = BookedProductsDto.builder()
+                .deliveryWeight(0.0)
+                .deliveryVolume(0.0)
+                .fragile(false)
+                .build();
 
         for (Product product : products) {
             Integer quantityToBook = shoppingCartProducts.get(product.getProductId());
