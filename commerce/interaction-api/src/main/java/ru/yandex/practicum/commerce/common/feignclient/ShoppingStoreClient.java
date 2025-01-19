@@ -13,7 +13,7 @@ import ru.yandex.practicum.commerce.common.model.ProductCategory;
 import java.util.List;
 import java.util.UUID;
 
-@FeignClient(name = "shopping-store/api/v1/shopping-store")
+@FeignClient(name = "shopping-store", path = "/api/v1/shopping-store")
 public interface ShoppingStoreClient {
     @PutMapping
     ProductDto createProduct(@Valid @RequestBody NewProductDto newProductDto);

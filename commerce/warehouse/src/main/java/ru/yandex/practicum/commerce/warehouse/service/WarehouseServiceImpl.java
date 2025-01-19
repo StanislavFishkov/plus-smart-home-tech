@@ -79,7 +79,7 @@ public class WarehouseServiceImpl implements WarehouseService {
         if (products.size() < shoppingCartDto.getProducts().size())
             shoppingCartProducts.keySet().stream()
                     .filter(productId -> products.stream().noneMatch(product -> product.getProductId().equals(productId)))
-                    .map(productId -> String.format("Product with id %s was not found at Warehouse", productId))
+                    .map("Product with id %s was not found at Warehouse"::formatted)
                     .collect(Collectors.collectingAndThen(Collectors.toList(), Optional::of))
                     .filter(l -> !l.isEmpty())
                     .ifPresent(l -> {
@@ -89,7 +89,7 @@ public class WarehouseServiceImpl implements WarehouseService {
         // check if there is enough quantity at the warehouse
         products.stream()
                 .filter(p -> p.getQuantity() < shoppingCartProducts.get(p.getProductId()))
-                .map(p -> String.format("Product with id %s has low quantity %d", p.getProductId(), p.getQuantity()))
+                .map(p -> "Product with id %s has low quantity %d".formatted(p.getProductId(), p.getQuantity()))
                 .collect(Collectors.collectingAndThen(Collectors.toList(), Optional::of))
                 .filter(l -> !l.isEmpty())
                 .ifPresent(l -> {
@@ -97,7 +97,11 @@ public class WarehouseServiceImpl implements WarehouseService {
                 });
 
         // collect shipping data
-        BookedProductsDto bookedProductsDto = new BookedProductsDto();
+        BookedProductsDto bookedProductsDto = BookedProductsDto.builder()
+                .deliveryWeight(0.0)
+                .deliveryVolume(0.0)
+                .fragile(false)
+                .build();
 
         for (Product product : products) {
             Integer quantityToBook = shoppingCartProducts.get(product.getProductId());
