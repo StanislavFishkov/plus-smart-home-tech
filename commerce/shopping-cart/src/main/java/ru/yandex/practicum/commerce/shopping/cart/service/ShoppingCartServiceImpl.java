@@ -81,7 +81,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         // check products exist in shoppingCart
         products.stream()
                 .filter(productId -> !shoppingCartProducts.containsKey(productId))
-                .map(productId -> String.format("ShoppingCart with id %s doesn't contain Product with id %s",
+                .map(productId -> "ShoppingCart with id %s doesn't contain Product with id %s".formatted(
                         shoppingCart.getShoppingCartId(), productId))
                 .collect(Collectors.collectingAndThen(Collectors.toList(), Optional::of))
                 .filter(l -> !l.isEmpty())
@@ -109,7 +109,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
         ShoppingCartProduct product = productRepository.findByShoppingCartAndProductId(shoppingCart,
                         updateProductQuantityDto.getProductId()).orElseThrow(() -> new NotFoundException(
-                                String.format("ShoppingCart with id %s doesn't contain Product with id %s",
+                                "ShoppingCart with id %s doesn't contain Product with id %s".formatted(
                                         shoppingCart.getShoppingCartId(), updateProductQuantityDto.getProductId())));
 
         product.setQuantity(updateProductQuantityDto.getNewQuantity());
