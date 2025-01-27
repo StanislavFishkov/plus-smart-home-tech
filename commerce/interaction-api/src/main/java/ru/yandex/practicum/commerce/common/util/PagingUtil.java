@@ -6,7 +6,10 @@ import ru.yandex.practicum.commerce.common.dto.PageableDto;
 
 public final class PagingUtil {
     public static PageRequest pageOf(PageableDto pageableDto) {
-        return PageRequest.of(pageableDto.getPage(), pageableDto.getSize(), Sort.Direction.ASC,
+        if (pageableDto.getSort().isEmpty())
+            return PageRequest.of(pageableDto.getPage(), pageableDto.getSize());
+        else
+            return PageRequest.of(pageableDto.getPage(), pageableDto.getSize(), Sort.Direction.ASC,
                 pageableDto.getSort().toArray(new String[0]));
     }
 }
