@@ -69,7 +69,7 @@ services:
     ports:
       - "4444:5432"
     environment:
-      POSTGRES_MULTIPLE_DATABASES: shopping_store, shopping_cart, warehouse, order_db
+      POSTGRES_MULTIPLE_DATABASES: shopping_store, shopping_cart, warehouse, order_db, payment, delivery
       POSTGRES_USER: dbuser
       POSTGRES_PASSWORD: 12345
     volumes:

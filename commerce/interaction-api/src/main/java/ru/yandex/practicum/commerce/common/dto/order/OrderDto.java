@@ -1,5 +1,8 @@
 package ru.yandex.practicum.commerce.common.dto.order;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import ru.yandex.practicum.commerce.common.model.OrderState;
@@ -13,11 +16,13 @@ import java.util.UUID;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderDto {
+    @NotNull
     UUID orderId;
 
     UUID shoppingCartId;
 
-    Map<UUID, Integer> products;
+    @NotEmpty
+    Map<@NotNull UUID, @Min(1) Integer> products;
 
     UUID paymentId;
 
