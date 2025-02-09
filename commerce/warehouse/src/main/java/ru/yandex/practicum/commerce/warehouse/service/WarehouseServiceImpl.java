@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.yandex.practicum.commerce.common.dto.shoppingcart.ShoppingCartDto;
 import ru.yandex.practicum.commerce.common.dto.warehouse.AddProductQuantityDto;
-import ru.yandex.practicum.commerce.common.dto.warehouse.AddressDto;
+import ru.yandex.practicum.commerce.common.dto.AddressDto;
 import ru.yandex.practicum.commerce.common.dto.warehouse.BookedProductsDto;
 import ru.yandex.practicum.commerce.common.dto.warehouse.NewProductDto;
 import ru.yandex.practicum.commerce.common.error.exception.NotFoundException;

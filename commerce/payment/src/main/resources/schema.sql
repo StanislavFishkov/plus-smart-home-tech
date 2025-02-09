@@ -5,5 +5,5 @@ CREATE TABLE IF NOT EXISTS payments (
     total_payment DECIMAL(10,2) NOT NULL,
     delivery_total DECIMAL(10,2) NOT NULL,
     product_total DECIMAL(10,2) NOT NULL,
-    CONSTRAINT pk_payment PRIMARY KEY (id)
+    CONSTRAINT pk_payments PRIMARY KEY (id)
 );

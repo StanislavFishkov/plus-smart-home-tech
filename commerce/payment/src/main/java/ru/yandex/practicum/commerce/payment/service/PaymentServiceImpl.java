@@ -51,7 +51,8 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public double calculateTotalCost(OrderDto orderDto) {
         if (orderDto.getProductPrice() == null || orderDto.getDeliveryPrice() == null)
-            throw new ConflictDataException("Product and delivery prices must be calculated before calculating total: %s".formatted(orderDto));
+            throw new ConflictDataException("Product and delivery prices must be calculated before calculating total: %s"
+                    .formatted(orderDto));
 
         return orderDto.getProductPrice() + calculateFeeCost(orderDto.getProductPrice()) + orderDto.getDeliveryPrice();
     }

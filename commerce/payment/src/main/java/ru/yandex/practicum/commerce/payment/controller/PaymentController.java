@@ -36,7 +36,7 @@ public class PaymentController implements PaymentClient {
 
     @PostMapping("/refund")
     @Override
-    public void setPaymentSuccess(UUID paymentId) {
+    public void setPaymentSuccess(@RequestBody UUID paymentId) {
         log.trace("POST /api/v1/payment/refund with paymentId {}", paymentId);
         paymentService.setPaymentSuccess(paymentId);
     }
@@ -50,7 +50,7 @@ public class PaymentController implements PaymentClient {
 
     @PostMapping("/failed")
     @Override
-    public void setPaymentFailed(UUID paymentId) {
+    public void setPaymentFailed(@RequestBody UUID paymentId) {
         log.trace("POST /api/v1/payment/failed with paymentId {}", paymentId);
         paymentService.setPaymentFailed(paymentId);
     }

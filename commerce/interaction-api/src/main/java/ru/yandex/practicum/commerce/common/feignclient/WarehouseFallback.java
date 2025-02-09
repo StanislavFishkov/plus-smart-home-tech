@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.commerce.common.dto.shoppingcart.ShoppingCartDto;
 import ru.yandex.practicum.commerce.common.dto.warehouse.AddProductQuantityDto;
-import ru.yandex.practicum.commerce.common.dto.warehouse.AddressDto;
+import ru.yandex.practicum.commerce.common.dto.AddressDto;
 import ru.yandex.practicum.commerce.common.dto.warehouse.BookedProductsDto;
 import ru.yandex.practicum.commerce.common.dto.warehouse.NewProductDto;
 

@@ -48,63 +48,63 @@ public class OrderController implements OrderClient {
 
     @PostMapping("/payment")
     @Override
-    public OrderDto setPaymentMade(@RequestParam UUID orderId) {
+    public OrderDto setPaymentMade(@RequestBody UUID orderId) {
         log.trace("POST /api/v1/order/payment with orderId {}", orderId);
         return orderService.setPaymentMade(orderId);
     }
 
     @PostMapping("/payment/failed")
     @Override
-    public OrderDto setPaymentFailed(@RequestParam UUID orderId) {
+    public OrderDto setPaymentFailed(@RequestBody UUID orderId) {
         log.trace("POST /api/v1/order/payment/failed with orderId {}", orderId);
         return orderService.setPaymentFailed(orderId);
     }
 
     @PostMapping("/delivery")
     @Override
-    public OrderDto setDeliveryMade(@RequestParam UUID orderId) {
+    public OrderDto setDeliveryMade(@RequestBody UUID orderId) {
         log.trace("POST /api/v1/order/delivery with orderId {}", orderId);
         return orderService.setDeliveryMade(orderId);
     }
 
     @PostMapping("/delivery/failed")
     @Override
-    public OrderDto setDeliveryFailed(@RequestParam UUID orderId) {
+    public OrderDto setDeliveryFailed(@RequestBody UUID orderId) {
         log.trace("POST /api/v1/order/delivery/failed with orderId {}", orderId);
         return orderService.setDeliveryFailed(orderId);
     }
 
     @PostMapping("/completed")
     @Override
-    public OrderDto setCompleted(@RequestParam UUID orderId) {
+    public OrderDto setCompleted(@RequestBody UUID orderId) {
         log.trace("POST /api/v1/order/completed with orderId {}", orderId);
         return orderService.setCompleted(orderId);
     }
 
     @PostMapping("/calculate/total")
     @Override
-    public OrderDto calculateTotal(@RequestParam UUID orderId) {
+    public OrderDto calculateTotal(@RequestBody UUID orderId) {
         log.trace("POST /api/v1/order/calculate/total with orderId {}", orderId);
         return orderService.calculateTotal(orderId);
     }
 
     @PostMapping("/calculate/delivery")
     @Override
-    public OrderDto calculateDelivery(@RequestParam UUID orderId) {
+    public OrderDto calculateDelivery(@RequestBody UUID orderId) {
         log.trace("POST /api/v1/order/calculate/delivery with orderId {}", orderId);
         return orderService.calculateDelivery(orderId);
     }
 
     @PostMapping("/assembly")
     @Override
-    public OrderDto assembly(@RequestParam UUID orderId) {
+    public OrderDto assembly(@RequestBody UUID orderId) {
         log.trace("POST /api/v1/order/assembly with orderId {}", orderId);
         return orderService.assembly(orderId);
     }
 
     @PostMapping("/assembly/failed")
     @Override
-    public OrderDto setAssemblyFailed(@RequestParam UUID orderId) {
+    public OrderDto setAssemblyFailed(@RequestBody UUID orderId) {
         log.trace("POST /api/v1/order/assembly/failed with orderId {}", orderId);
         return orderService.setAssemblyFailed(orderId);
     }
