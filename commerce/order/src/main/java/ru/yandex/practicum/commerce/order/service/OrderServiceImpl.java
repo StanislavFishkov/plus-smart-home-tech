@@ -3,13 +3,17 @@ package ru.yandex.practicum.commerce.order.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 import ru.yandex.practicum.commerce.common.dto.PageableDto;
 import ru.yandex.practicum.commerce.common.dto.order.NewOrderDto;
 import ru.yandex.practicum.commerce.common.dto.order.OrderDto;
 import ru.yandex.practicum.commerce.common.dto.order.ProductReturnRequestDto;
+import ru.yandex.practicum.commerce.common.dto.payment.PaymentDto;
 import ru.yandex.practicum.commerce.common.error.exception.ConflictDataException;
 import ru.yandex.practicum.commerce.common.error.exception.NotFoundException;
+import ru.yandex.practicum.commerce.common.feignclient.PaymentClient;
 import ru.yandex.practicum.commerce.common.model.OrderState;
 import ru.yandex.practicum.commerce.common.util.PagingUtil;
 import ru.yandex.practicum.commerce.order.mapper.OrderMapper;
@@ -25,6 +29,9 @@ import java.util.UUID;
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
+
+    private final PlatformTransactionManager platformTransactionManager;
+    private final PaymentClient paymentClient;
 
     @Override
     @Transactional
@@ -87,7 +94,32 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDto calculateTotal(UUID orderId) {
-        return null;
+        TransactionTemplate transactionTemplate = new TransactionTemplate(platformTransactionManager);
+        transactionTemplate.setReadOnly(true);
+        OrderDto orderDto = transactionTemplate.execute(status -> {
+            return orderMapper.toDto(checkAndGetOrderById(orderId));
+        });
+
+        if (orderDto == null || orderDto.getDeliveryPrice() == null)
+            throw new ConflictDataException("Delivery price must be calculated before calculating total: %s".formatted(orderDto));
+
+        orderDto.setProductPrice(paymentClient.calculateProductCost(orderDto));
+        orderDto.setTotalPrice(paymentClient.calculateTotalCost(orderDto));
+
+        PaymentDto paymentDto = paymentClient.create(orderDto);
+
+        transactionTemplate = new TransactionTemplate(platformTransactionManager);
+        orderDto = transactionTemplate.execute(status -> {
+            Order order = checkAndGetOrderById(orderId);
+            order.setPaymentId(paymentDto.getPaymentId());
+            order.setProductPrice(paymentDto.getTotalPayment() - paymentDto.getDeliveryTotal() - paymentDto.getFeeTotal());
+            order.setTotalPrice(paymentDto.getTotalPayment());
+            order.setState(OrderState.ON_PAYMENT);
+            order = orderRepository.save(order);
+            return orderMapper.toDto(order);
+        });
+        log.info("Payment is calculated and saved for order: {}", orderDto);
+        return orderDto;
     }
 
     @Override

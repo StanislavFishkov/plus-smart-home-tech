@@ -15,13 +15,13 @@ public interface PaymentClient {
     PaymentDto create(@Valid @RequestBody OrderDto orderDto);
 
     @PostMapping("/totalCost")
-    Double calculateTotalCost(@Valid @RequestBody OrderDto orderDto);
+    double calculateTotalCost(@Valid @RequestBody OrderDto orderDto);
 
     @PostMapping("/refund")
     void setPaymentSuccess(UUID paymentId);
 
     @PostMapping("/productCost")
-    Double calculateProductCost(@Valid @RequestBody OrderDto orderDto);
+    double calculateProductCost(@Valid @RequestBody OrderDto orderDto);
 
     @PostMapping("/failed")
     void setPaymentFailed(UUID paymentId);

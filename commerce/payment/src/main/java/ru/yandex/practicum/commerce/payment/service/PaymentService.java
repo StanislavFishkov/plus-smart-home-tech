@@ -8,11 +8,11 @@ import java.util.UUID;
 public interface PaymentService {
     PaymentDto create(OrderDto orderDto);
 
-    Double calculateTotalCost(OrderDto orderDto);
+    double calculateTotalCost(OrderDto orderDto);
 
     void setPaymentSuccess(UUID paymentId);
 
-    Double calculateProductCost(OrderDto orderDto);
+    double calculateProductCost(OrderDto orderDto);
 
     void setPaymentFailed(UUID paymentId);
 }

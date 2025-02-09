@@ -8,8 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
 import ru.yandex.practicum.commerce.common.dto.order.OrderDto;
 import ru.yandex.practicum.commerce.common.dto.payment.PaymentDto;
+import ru.yandex.practicum.commerce.common.error.exception.ConflictDataException;
 import ru.yandex.practicum.commerce.common.error.exception.NotFoundException;
-import ru.yandex.practicum.commerce.common.error.exception.ValidationException;
 import ru.yandex.practicum.commerce.common.feignclient.OrderClient;
 import ru.yandex.practicum.commerce.common.feignclient.ShoppingStoreClient;
 import ru.yandex.practicum.commerce.common.model.PaymentState;
@@ -34,7 +34,7 @@ public class PaymentServiceImpl implements PaymentService {
     @Transactional
     public PaymentDto create(OrderDto orderDto) {
         if (orderDto.getTotalPrice() == null || orderDto.getProductPrice() == null || orderDto.getDeliveryPrice() == null)
-            throw new ValidationException("All order prices must be calculated before payment creation: %s".formatted(orderDto));
+            throw new ConflictDataException("All order prices must be calculated before payment creation: %s".formatted(orderDto));
 
         Payment payment = Payment.builder()
                 .orderId(orderDto.getOrderId())
@@ -49,9 +49,9 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public Double calculateTotalCost(OrderDto orderDto) {
+    public double calculateTotalCost(OrderDto orderDto) {
         if (orderDto.getProductPrice() == null || orderDto.getDeliveryPrice() == null)
-            throw new ValidationException("Product and delivery prices must be calculated before calculating total: %s".formatted(orderDto));
+            throw new ConflictDataException("Product and delivery prices must be calculated before calculating total: %s".formatted(orderDto));
 
         return orderDto.getProductPrice() + calculateFeeCost(orderDto.getProductPrice()) + orderDto.getDeliveryPrice();
     }
@@ -64,7 +64,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public Double calculateProductCost(OrderDto orderDto) {
+    public double calculateProductCost(OrderDto orderDto) {
         return orderDto.getProducts().entrySet().stream()
                 .map(e -> shoppingStoreClient.getProduct(e.getKey()).getPrice() * e.getValue())
                 .reduce(Double::sum)

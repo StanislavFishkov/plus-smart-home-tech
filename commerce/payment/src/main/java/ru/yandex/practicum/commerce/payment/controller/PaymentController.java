@@ -29,7 +29,7 @@ public class PaymentController implements PaymentClient {
 
     @PostMapping("/totalCost")
     @Override
-    public Double calculateTotalCost(@Valid @RequestBody OrderDto orderDto) {
+    public double calculateTotalCost(@Valid @RequestBody OrderDto orderDto) {
         log.trace("POST /api/v1/payment/totalCost with OrderDto {}", orderDto);
         return paymentService.calculateTotalCost(orderDto);
     }
@@ -43,7 +43,7 @@ public class PaymentController implements PaymentClient {
 
     @PostMapping("/productCost")
     @Override
-    public Double calculateProductCost(@Valid @RequestBody OrderDto orderDto) {
+    public double calculateProductCost(@Valid @RequestBody OrderDto orderDto) {
         log.trace("POST /api/v1/payment/productCost with OrderDto {}", orderDto);
         return paymentService.calculateProductCost(orderDto);
     }
