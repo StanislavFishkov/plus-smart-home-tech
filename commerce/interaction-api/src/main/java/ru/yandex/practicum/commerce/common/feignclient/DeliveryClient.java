@@ -2,6 +2,7 @@ package ru.yandex.practicum.commerce.common.feignclient;
 
 import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,6 +12,7 @@ import ru.yandex.practicum.commerce.common.dto.order.OrderDto;
 
 import java.util.UUID;
 
+@Validated
 @FeignClient(name = "delivery", path = "/api/v1/delivery")
 public interface DeliveryClient {
     @PutMapping

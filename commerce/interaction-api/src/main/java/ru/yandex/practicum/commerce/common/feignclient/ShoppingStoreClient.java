@@ -2,6 +2,7 @@ package ru.yandex.practicum.commerce.common.feignclient;
 
 import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.commerce.common.dto.PageableDto;
 import ru.yandex.practicum.commerce.common.dto.shoppingstore.NewProductDto;
@@ -13,6 +14,7 @@ import ru.yandex.practicum.commerce.common.model.ProductCategory;
 import java.util.List;
 import java.util.UUID;
 
+@Validated
 @FeignClient(name = "shopping-store", path = "/api/v1/shopping-store")
 public interface ShoppingStoreClient {
     @PutMapping

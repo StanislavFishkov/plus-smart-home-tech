@@ -3,6 +3,7 @@ package ru.yandex.practicum.commerce.common.feignclient;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.commerce.common.dto.PageableDto;
 import ru.yandex.practicum.commerce.common.dto.order.NewOrderDto;
@@ -12,6 +13,7 @@ import ru.yandex.practicum.commerce.common.dto.order.ProductReturnRequestDto;
 import java.util.List;
 import java.util.UUID;
 
+@Validated
 @FeignClient(name = "order", path = "/api/v1/order")
 public interface OrderClient {
     @PutMapping
