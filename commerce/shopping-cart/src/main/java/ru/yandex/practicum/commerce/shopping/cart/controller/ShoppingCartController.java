@@ -3,6 +3,7 @@ package ru.yandex.practicum.commerce.shopping.cart.controller;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,7 +44,7 @@ public class ShoppingCartController implements ShoppingCartClient {
     @PutMapping
     @Override
     public ShoppingCartDto addProducts(@NotBlank @RequestParam("username") String username,
-                                       @RequestBody Map<@NotNull UUID, @Min(1) Integer> products) {
+                                       @RequestBody @NotEmpty Map<@NotNull UUID, @Min(1) Integer> products) {
         log.trace("PUT /api/v1/shopping-cart by username {} with body {}", username, products);
         return shoppingCartService.addProducts(username, products);
     }
@@ -51,7 +52,7 @@ public class ShoppingCartController implements ShoppingCartClient {
     @PostMapping("/remove")
     @Override
     public ShoppingCartDto removeProducts(@NotBlank @RequestParam("username") String username,
-                                          @RequestBody Set<@NotNull UUID> products) {
+                                          @RequestBody @NotEmpty Set<@NotNull UUID> products) {
         log.trace("POST /api/v1/shopping-cart/remove by username {} with body {}", username, products);
         return shoppingCartService.removeProducts(username, products);
     }

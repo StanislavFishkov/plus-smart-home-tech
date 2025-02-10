@@ -33,7 +33,7 @@ public interface WarehouseClient {
     void shippedToDelivery(@Valid @RequestBody ShippedToDeliveryRequestDto shippedToDeliveryRequestDto);
 
     @PostMapping("/return")
-    void returnProducts(@RequestBody @NotEmpty Map<@NotNull UUID, @Min(0) Integer> products);
+    void returnProducts(@RequestBody @NotEmpty Map<@NotNull UUID, @Min(1) Integer> products);
 
     @PostMapping("/assembly")
     BookedProductsDto assemblyProductForOrderFromShoppingCart(@Valid @RequestBody AssemblyProductsForOrderRequestDto assemblyProductsForOrderRequestDto);

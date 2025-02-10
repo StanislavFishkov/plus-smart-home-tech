@@ -1,6 +1,8 @@
 package ru.yandex.practicum.commerce.common.feignclient;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -18,22 +20,23 @@ import java.util.UUID;
 @FeignClient(name = "shopping-cart", path = "/api/v1/shopping-cart")
 public interface ShoppingCartClient {
     @GetMapping
-    ShoppingCartDto get(@RequestParam("username") String username);
+    ShoppingCartDto get(@NotBlank @RequestParam("username") String username);
 
     @DeleteMapping
-    void deactivate(@RequestParam("username") String username);
+    void deactivate(@NotBlank @RequestParam("username") String username);
 
     @PutMapping
-    ShoppingCartDto addProducts(@RequestParam("username") String username,
-                                @RequestBody @NotEmpty Map<@NotNull UUID, @Min(0) Integer> products);
+    ShoppingCartDto addProducts(@NotBlank @RequestParam("username") String username,
+                                @RequestBody @NotEmpty Map<@NotNull UUID, @Min(1) Integer> products);
 
     @PostMapping("/remove")
-    ShoppingCartDto removeProducts(@RequestParam("username") String username, @RequestBody Set<UUID> products);
+    ShoppingCartDto removeProducts(@NotBlank @RequestParam("username") String username,
+                                   @RequestBody @NotEmpty Set<UUID> products);
 
     @PostMapping("/change-quantity")
-    ShoppingCartDto updateProductQuantity(@RequestParam("username") String username,
-                                          @RequestBody UpdateProductQuantityDto updateProductQuantityDto);
+    ShoppingCartDto updateProductQuantity(@NotBlank @RequestParam("username") String username,
+                                          @Valid @RequestBody UpdateProductQuantityDto updateProductQuantityDto);
 
     @PostMapping("/booking")
-    BookedProductsDto bookProductsInWarehouse(@RequestParam("username") String username);
+    BookedProductsDto bookProductsInWarehouse(@NotBlank @RequestParam("username") String username);
 }

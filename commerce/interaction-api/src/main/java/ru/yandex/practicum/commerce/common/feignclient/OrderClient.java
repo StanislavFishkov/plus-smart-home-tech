@@ -27,29 +27,29 @@ public interface OrderClient {
     OrderDto returnOrder(@Valid @RequestBody ProductReturnRequestDto productReturnRequestDto);
 
     @PostMapping("/payment")
-    OrderDto setPaymentMade(@RequestParam UUID orderId);
+    OrderDto setPaymentMade(@RequestBody UUID orderId);
 
     @PostMapping("/payment/failed")
-    OrderDto setPaymentFailed(@RequestParam UUID orderId);
+    OrderDto setPaymentFailed(@RequestBody UUID orderId);
 
     @PostMapping("/delivery")
-    OrderDto setDeliveryMade(@RequestParam UUID orderId);
+    OrderDto setDeliveryMade(@RequestBody UUID orderId);
 
     @PostMapping("/delivery/failed")
-    OrderDto setDeliveryFailed(@RequestParam UUID orderId);
+    OrderDto setDeliveryFailed(@RequestBody UUID orderId);
 
     @PostMapping("/completed")
-    OrderDto setCompleted(@RequestParam UUID orderId);
+    OrderDto setCompleted(@RequestBody UUID orderId);
 
     @PostMapping("/calculate/total")
-    OrderDto calculateTotal(@RequestParam UUID orderId);
+    OrderDto calculateTotal(@RequestBody UUID orderId);
 
     @PostMapping("/calculate/delivery")
-    OrderDto calculateDelivery(@RequestParam UUID orderId);
+    OrderDto calculateDelivery(@RequestBody UUID orderId);
 
     @PostMapping("/assembly")
-    OrderDto assembly(@RequestParam UUID orderId);
+    OrderDto assembly(@RequestBody UUID orderId);
 
     @PostMapping("/assembly/failed")
-    OrderDto setAssemblyFailed(@RequestParam UUID orderId);
+    OrderDto setAssemblyFailed(@RequestBody UUID orderId);
 }
