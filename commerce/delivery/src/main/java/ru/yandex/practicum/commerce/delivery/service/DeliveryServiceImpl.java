@@ -9,6 +9,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import ru.yandex.practicum.commerce.common.dto.delivery.DeliveryDto;
 import ru.yandex.practicum.commerce.common.dto.delivery.NewDeliveryDto;
 import ru.yandex.practicum.commerce.common.dto.order.OrderDto;
+import ru.yandex.practicum.commerce.common.dto.warehouse.ShippedToDeliveryRequestDto;
 import ru.yandex.practicum.commerce.common.error.exception.ConflictDataException;
 import ru.yandex.practicum.commerce.common.error.exception.NotFoundException;
 import ru.yandex.practicum.commerce.common.feignclient.OrderClient;
@@ -52,6 +53,11 @@ public class DeliveryServiceImpl implements DeliveryService {
     @Override
     public void setDeliveryPicked(UUID deliveryId) {
         UUID orderId = changeDeliveryState(deliveryId, DeliveryState.IN_PROGRESS);
+
+        warehouseClient.shippedToDelivery(ShippedToDeliveryRequestDto.builder()
+                .orderId(orderId)
+                .deliveryId(deliveryId)
+                .build());
     }
 
     @Override

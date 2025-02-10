@@ -1,19 +1,24 @@
 package ru.yandex.practicum.commerce.order.service;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
 import ru.yandex.practicum.commerce.common.dto.PageableDto;
+import ru.yandex.practicum.commerce.common.dto.delivery.DeliveryDto;
+import ru.yandex.practicum.commerce.common.dto.delivery.NewDeliveryDto;
 import ru.yandex.practicum.commerce.common.dto.order.NewOrderDto;
 import ru.yandex.practicum.commerce.common.dto.order.OrderDto;
 import ru.yandex.practicum.commerce.common.dto.order.ProductReturnRequestDto;
 import ru.yandex.practicum.commerce.common.dto.payment.PaymentDto;
+import ru.yandex.practicum.commerce.common.dto.warehouse.AssemblyProductsForOrderRequestDto;
+import ru.yandex.practicum.commerce.common.dto.warehouse.BookedProductsDto;
 import ru.yandex.practicum.commerce.common.error.exception.ConflictDataException;
 import ru.yandex.practicum.commerce.common.error.exception.NotFoundException;
+import ru.yandex.practicum.commerce.common.feignclient.DeliveryClient;
 import ru.yandex.practicum.commerce.common.feignclient.PaymentClient;
+import ru.yandex.practicum.commerce.common.feignclient.WarehouseClient;
 import ru.yandex.practicum.commerce.common.model.OrderState;
 import ru.yandex.practicum.commerce.common.util.PagingUtil;
 import ru.yandex.practicum.commerce.order.mapper.OrderMapper;
@@ -21,24 +26,57 @@ import ru.yandex.practicum.commerce.order.model.Order;
 import ru.yandex.practicum.commerce.order.repository.OrderRepository;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
 
-    private final PlatformTransactionManager platformTransactionManager;
+    private final TransactionTemplate transactionTemplateReadOnly;
+    private final TransactionTemplate transactionTemplate;
+    private final WarehouseClient warehouseClient;
+    private final DeliveryClient deliveryClient;
     private final PaymentClient paymentClient;
 
+    public OrderServiceImpl(OrderRepository orderRepository, OrderMapper orderMapper,
+                            WarehouseClient warehouseClient, DeliveryClient deliveryClient, PaymentClient paymentClient,
+                            PlatformTransactionManager platformTransactionManager) {
+        this.orderRepository = orderRepository;
+        this.orderMapper = orderMapper;
+        this.warehouseClient = warehouseClient;
+        this.deliveryClient = deliveryClient;
+        this.paymentClient = paymentClient;
+
+        this.transactionTemplate = new TransactionTemplate(platformTransactionManager);
+        this.transactionTemplateReadOnly = new TransactionTemplate(platformTransactionManager);
+        this.transactionTemplateReadOnly.setReadOnly(true);
+    }
+
     @Override
-    @Transactional
     public OrderDto create(String username, NewOrderDto newOrderDto) {
-        Order order = orderRepository.save(orderMapper.toEntity(username, newOrderDto));
-        log.info("Order is created: {} with id {}", newOrderDto, order.getOrderId());
-        return orderMapper.toDto(order);
+        UUID orderId = transactionTemplate.execute(status -> {
+            return orderRepository.save(orderMapper.toEntity(username, newOrderDto)).getOrderId();
+        });
+
+        DeliveryDto deliveryDto = deliveryClient.create(NewDeliveryDto.builder()
+                .orderId(orderId)
+                .fromAddress(warehouseClient.getAddress())
+                .toAddress(newOrderDto.getDeliveryAddress())
+                .build());
+
+        OrderDto orderDto = transactionTemplate.execute(status -> {
+            Order order = checkAndGetOrderById(orderId);
+            order.setDeliveryId(deliveryDto.getDeliveryId());
+            orderRepository.save(order);
+
+            return orderMapper.toDto(order);
+        });
+
+        log.info("Order is created: {} with id {}", orderDto, orderId);
+        return orderDto;
     }
 
     @Override
@@ -94,13 +132,11 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDto calculateTotal(UUID orderId) {
-        TransactionTemplate transactionTemplate = new TransactionTemplate(platformTransactionManager);
-        transactionTemplate.setReadOnly(true);
-        OrderDto orderDto = transactionTemplate.execute(status -> {
+        OrderDto orderDto = Objects.requireNonNull(transactionTemplateReadOnly.execute(status -> {
             return orderMapper.toDto(checkAndGetOrderById(orderId));
-        });
+        }));
 
-        if (orderDto == null || orderDto.getDeliveryPrice() == null)
+        if (orderDto.getDeliveryPrice() == null)
             throw new ConflictDataException("Delivery price must be calculated before calculating total: %s".formatted(orderDto));
 
         orderDto.setProductPrice(paymentClient.calculateProductCost(orderDto));
@@ -108,7 +144,6 @@ public class OrderServiceImpl implements OrderService {
 
         PaymentDto paymentDto = paymentClient.create(orderDto);
 
-        transactionTemplate = new TransactionTemplate(platformTransactionManager);
         orderDto = transactionTemplate.execute(status -> {
             Order order = checkAndGetOrderById(orderId);
             order.setPaymentId(paymentDto.getPaymentId());
@@ -124,12 +159,46 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDto calculateDelivery(UUID orderId) {
-        return null;
+        OrderDto orderDto = Objects.requireNonNull(transactionTemplateReadOnly.execute(status -> {
+            return orderMapper.toDto(checkAndGetOrderById(orderId));
+        }));
+        double deliveryPrice = deliveryClient.calculateDeliveryCost(orderDto);
+
+        orderDto = transactionTemplate.execute(status -> {
+            Order order = checkAndGetOrderById(orderId);
+            order.setDeliveryPrice(deliveryPrice);
+            order.setState(OrderState.ON_DELIVERY);
+            order = orderRepository.save(order);
+            return orderMapper.toDto(order);
+        });
+        log.info("Delivery is calculated for order: {}", orderDto);
+        return orderDto;
     }
 
     @Override
     public OrderDto assembly(UUID orderId) {
-        return null;
+        var products = Objects.requireNonNull(transactionTemplateReadOnly.execute(status -> {
+            return checkAndGetOrderById(orderId).getProducts();
+        }));
+
+        AssemblyProductsForOrderRequestDto assemblyDto = AssemblyProductsForOrderRequestDto.builder()
+                .orderId(orderId)
+                .products(products)
+                .build();
+
+        BookedProductsDto bookedProductsDto = warehouseClient.assemblyProductForOrderFromShoppingCart(assemblyDto);
+
+        OrderDto orderDto = Objects.requireNonNull(transactionTemplate.execute(status -> {
+            Order order = checkAndGetOrderById(orderId);
+            order.setDeliveryWeight(bookedProductsDto.getDeliveryWeight());
+            order.setDeliveryVolume(bookedProductsDto.getDeliveryVolume());
+            order.setFragile(bookedProductsDto.getFragile());
+            order.setState(OrderState.ASSEMBLED);
+            orderRepository.save(order);
+            return orderMapper.toDto(order);
+        }));
+        log.info("Order is assembled: {}", orderDto);
+        return orderDto;
     }
 
     @Override
