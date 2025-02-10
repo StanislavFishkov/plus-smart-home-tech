@@ -1,12 +1,15 @@
 package ru.yandex.practicum.commerce.common.feignclient;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.commerce.common.dto.shoppingcart.ShoppingCartDto;
-import ru.yandex.practicum.commerce.common.dto.warehouse.AddProductQuantityDto;
-import ru.yandex.practicum.commerce.common.dto.warehouse.AddressDto;
-import ru.yandex.practicum.commerce.common.dto.warehouse.BookedProductsDto;
-import ru.yandex.practicum.commerce.common.dto.warehouse.NewProductDto;
+import ru.yandex.practicum.commerce.common.dto.warehouse.*;
+import ru.yandex.practicum.commerce.common.dto.AddressDto;
+
+import java.util.Map;
+import java.util.UUID;
 
 @Slf4j
 @Component
@@ -14,13 +17,7 @@ public class WarehouseFallback implements WarehouseClient {
     @Override
     public AddressDto getAddress() {
         log.warn("Service warehouse called for getAddress while unavailable");
-        return AddressDto.builder()
-                .country("Warehouse")
-                .city("is")
-                .street("not")
-                .house("available")
-                .flat("now")
-                .build();
+        return null;
     }
 
     @Override
@@ -36,6 +33,23 @@ public class WarehouseFallback implements WarehouseClient {
     @Override
     public BookedProductsDto checkProductQuantities(ShoppingCartDto shoppingCartDto) {
         log.warn("Service warehouse called for checkProductQuantities while unavailable with param {}", shoppingCartDto);
+        return null;
+    }
+
+    @Override
+    public void shippedToDelivery(ShippedToDeliveryRequestDto shippedToDeliveryRequestDto) {
+        log.warn("Service warehouse called for shippedToDelivery while unavailable with param {}", shippedToDeliveryRequestDto);
+    }
+
+    @Override
+    public void returnProducts(Map<@NotNull UUID, @Min(0) Integer> products) {
+        log.warn("Service warehouse called for returnProducts while unavailable with param {}", products);
+    }
+
+    @Override
+    public BookedProductsDto assemblyProductForOrderFromShoppingCart(AssemblyProductsForOrderRequestDto assemblyProductsForOrderRequestDto) {
+        log.warn("Service warehouse called for assemblyProductForOrderFromShoppingCart while unavailable with param {}",
+                assemblyProductsForOrderRequestDto);
         return null;
     }
 }

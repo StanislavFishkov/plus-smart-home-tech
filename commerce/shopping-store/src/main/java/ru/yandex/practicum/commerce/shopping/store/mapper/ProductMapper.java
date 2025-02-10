@@ -1,8 +1,6 @@
 package ru.yandex.practicum.commerce.shopping.store.mapper;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingConstants;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 import ru.yandex.practicum.commerce.common.dto.shoppingstore.NewProductDto;
 import ru.yandex.practicum.commerce.common.dto.shoppingstore.ProductDto;
 import ru.yandex.practicum.commerce.common.dto.shoppingstore.UpdateProductDto;
@@ -21,5 +19,6 @@ public interface ProductMapper {
 
     Product toEntity(UpdateProductDto updateProductDto);
 
+    @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
     Product update(@MappingTarget Product product, UpdateProductQuantityStateDto updateProductQuantityStateDto);
 }

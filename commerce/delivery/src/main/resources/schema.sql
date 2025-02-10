@@ -1,0 +1,20 @@
+CREATE TABLE IF NOT EXISTS deliveries (
+    id UUID,
+    order_id UUID NOT NULL,
+    delivery_state VARCHAR(255) NOT NULL,
+    country_from VARCHAR(255) NOT NULL,
+    city_from VARCHAR(255) NOT NULL,
+    street_from VARCHAR(255) NOT NULL,
+    house_from VARCHAR(255) NOT NULL,
+    flat_from VARCHAR(255),
+    country_to VARCHAR(255) NOT NULL,
+    city_to VARCHAR(255) NOT NULL,
+    street_to VARCHAR(255) NOT NULL,
+    house_to VARCHAR(255) NOT NULL,
+    flat_to VARCHAR(255),
+    delivery_weight DECIMAL(10,2),
+    delivery_volume DECIMAL(10,2),
+    fragile BOOLEAN,
+    delivery_cost DECIMAL(10,2),
+    CONSTRAINT pk_deliveries PRIMARY KEY (id)
+);

@@ -52,3 +52,15 @@ spring:
           uri: lb://warehouse
           predicates:
             - Path=/warehouse/**
+        - id: order_service_route
+          uri: lb://order
+          predicates:
+            - Path=/order/**
+        - id: payment_service_route
+          uri: lb://payment
+          predicates:
+            - Path=/payment/**
+        - id: delivery_service_route
+          uri: lb://delivery
+          predicates:
+            - Path=/delivery/**

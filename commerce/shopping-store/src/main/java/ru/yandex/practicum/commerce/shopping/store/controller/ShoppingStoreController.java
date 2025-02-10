@@ -3,6 +3,7 @@ package ru.yandex.practicum.commerce.shopping.store.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.commerce.common.dto.shoppingstore.NewProductDto;
 import ru.yandex.practicum.commerce.common.dto.shoppingstore.ProductDto;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Slf4j
+@Validated
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "/api/v1/shopping-store")
